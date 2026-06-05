@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varq.am</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --r:#FF385C;--r2:#E31C5F;
+  --d:#222222;--t:#484848;--m:#717171;
+  --b:#DDDDDD;--bg:#F7F7F7;--w:#fff;
+  --sh:0 1px 2px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
+  --shh:0 2px 4px rgba(0,0,0,.18);
+  --rad:12px;
+}
+body{font-family:'Inter',sans-serif;color:var(--t);background:var(--w);-webkit-font-smoothing:antialiased;}
+
+/* ─── NAVBAR ─── */
+.nb{border-bottom:1px solid var(--b);background:var(--w);position:sticky;top:0;z-index:200;}
+.nb-top{max-width:1760px;margin:0 auto;padding:0 80px;height:80px;display:flex;align-items:center;justify-content:space-between;gap:32px;}
+.logo{font-size:24px;font-weight:800;color:var(--r);letter-spacing:-1px;cursor:pointer;}
+
+/* search pill */
+.sp{display:flex;align-items:center;border:1px solid var(--b);border-radius:40px;box-shadow:var(--sh);height:48px;cursor:pointer;background:var(--w);transition:box-shadow .2s;}
+.sp:hover,.sp:focus-within{box-shadow:var(--shh);}
+.sp-s{padding:0 18px;border-right:1px solid var(--b);height:100%;display:flex;flex-direction:column;justify-content:center;cursor:pointer;transition:background .15s;border-radius:40px;}
+.sp-s:hover{background:var(--bg);}
+.sp-s:last-of-type{border-right:none;}
+.sp-label{font-size:11px;font-weight:700;color:var(--d);white-space:nowrap;}
+.sp-val{font-size:12px;color:var(--m);white-space:nowrap;}
+.sp-val input,.sp-val select{border:none;outline:none;font:12px 'Inter',sans-serif;color:var(--m);background:transparent;width:100%;cursor:pointer;max-width:120px;}
+.sp-btn{background:var(--r);border:none;margin:6px;padding:10px;border-radius:30px;cursor:pointer;display:flex;align-items:center;gap:6px;flex-shrink:0;transition:background .2s;}
+.sp-btn:hover{background:var(--r2);}
+.sp-btn svg{width:14px;height:14px;}
+.sp-btn span{font-size:13px;font-weight:700;color:white;font-family:'Inter',sans-serif;}
+
+.nb-r{display:flex;align-items:center;gap:4px;}
+.lg{display:flex;gap:1px;background:var(--bg);border-radius:20px;padding:3px;}
+.lbtn{padding:5px 9px;border-radius:16px;font-size:11px;font-weight:700;border:none;background:transparent;color:var(--m);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;letter-spacing:.3px;}
+.lbtn.on{background:var(--w);color:var(--d);box-shadow:0 1px 3px rgba(0,0,0,.1);}
+.ng{padding:10px 14px;border-radius:22px;border:none;background:transparent;font:13px/1 'Inter',sans-serif;font-weight:500;color:var(--d);cursor:pointer;transition:background .15s;}
+.ng:hover{background:var(--bg);}
+.ua{display:flex;align-items:center;gap:8px;border:1px solid var(--b);border-radius:22px;padding:6px 10px 6px 14px;cursor:pointer;background:var(--w);transition:box-shadow .2s;}
+.ua:hover{box-shadow:var(--shh);}
+.ua-ic{font-size:13px;font-weight:600;color:var(--d);}
+.ua-av{width:28px;height:28px;border-radius:50%;background:var(--d);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;}
+
+/* cat strip */
+.cs{border-bottom:1px solid var(--b);background:var(--w);overflow-x:auto;scrollbar-width:none;}
+.cs::-webkit-scrollbar{display:none;}
+.cs-i{max-width:1760px;margin:0 auto;padding:0 80px;display:flex;gap:0;}
+.cc{padding:14px 16px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;border-bottom:2px solid transparent;color:var(--m);font-size:11px;font-weight:600;white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.cc:hover{border-bottom-color:var(--b);color:var(--d);}
+.cc.on{border-bottom-color:var(--d);color:var(--d);}
+.cc-ic{font-size:20px;line-height:1;}
+
+/* ─── MAIN ─── */
+.main{max-width:1760px;margin:0 auto;padding:24px 80px 60px;}
+
+/* toolbar */
+.tb{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.tb-l{display:flex;align-items:center;gap:12px;}
+.tb-title{font-size:22px;font-weight:700;color:var(--d);letter-spacing:-.5px;}
+.tb-cnt{font-size:14px;color:var(--m);}
+.tb-r{display:flex;align-items:center;gap:8px;}
+.fp{padding:8px 14px;border-radius:22px;border:1px solid var(--b);font:12px/1 'Inter',sans-serif;font-weight:600;color:var(--d);cursor:pointer;background:var(--w);transition:all .15s;}
+.fp:hover,.fp.on{background:var(--d);color:var(--w);border-color:var(--d);}
+.vt{display:flex;gap:1px;background:var(--bg);border-radius:8px;padding:3px;}
+.vb{width:32px;height:32px;border-radius:5px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .15s;}
+.vb.on{background:var(--w);box-shadow:0 1px 3px rgba(0,0,0,.1);}
+
+/* ─── GRID ─── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:24px;}
+.grid.hide,.list.hide{display:none;}
+
+.card{cursor:pointer;border-radius:var(--rad);}
+.card:hover .card-img{box-shadow:0 4px 20px rgba(0,0,0,.12);}
+
+.card-img{
+  aspect-ratio:20/19;
+  background:var(--bg);
+  border-radius:var(--rad);
+  display:flex;align-items:center;justify-content:center;
+  font-size:80px;position:relative;overflow:hidden;
+  transition:box-shadow .2s;
+  /* gradient per category */
+}
+.card-img.cat-0{background:linear-gradient(135deg,#ffeae4,#ffd5c8);}
+.card-img.cat-1{background:linear-gradient(135deg,#e8f4f8,#cce5f0);}
+.card-img.cat-2{background:linear-gradient(135deg,#fef9e7,#fde68a);}
+.card-img.cat-3{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);}
+.card-img.cat-4{background:linear-gradient(135deg,#f3e5f5,#e1bee7);}
+.card-img.cat-5{background:linear-gradient(135deg,#fff3e0,#ffe0b2);}
+.card-img.cat-6{background:linear-gradient(135deg,#e8eaf6,#c5cae9);}
+
+.card-fav{position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;font-size:22px;transition:transform .18s;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));}
+.card-fav:hover{transform:scale(1.15);}
+.card-badge{position:absolute;top:12px;left:12px;background:var(--w);color:var(--d);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;box-shadow:var(--sh);}
+
+.card-body{padding:10px 2px 0;}
+.card-row1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px;}
+.card-place{font-size:14px;font-weight:600;color:var(--d);line-height:1.3;}
+.card-rating{font-size:13px;font-weight:500;color:var(--d);display:flex;align-items:center;gap:3px;flex-shrink:0;}
+.card-sub{font-size:13px;color:var(--m);margin-bottom:6px;line-height:1.4;}
+.card-price{font-size:14px;color:var(--d);}
+.card-price b{font-weight:700;}
+
+/* ─── LIST ─── */
+.list{display:flex;flex-direction:column;gap:0;}
+.lrow{display:flex;gap:0;border-bottom:1px solid var(--b);padding:20px 0;cursor:pointer;transition:background .15s;}
+.lrow:hover{background:var(--bg);margin:0 -16px;padding:20px 16px;border-radius:var(--rad);}
+.lrow-img{width:200px;height:150px;flex-shrink:0;border-radius:var(--rad);display:flex;align-items:center;justify-content:center;font-size:60px;margin-right:20px;position:relative;}
+.lrow-img.cat-0{background:linear-gradient(135deg,#ffeae4,#ffd5c8);}
+.lrow-img.cat-1{background:linear-gradient(135deg,#e8f4f8,#cce5f0);}
+.lrow-img.cat-2{background:linear-gradient(135deg,#fef9e7,#fde68a);}
+.lrow-img.cat-3{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);}
+.lrow-img.cat-4{background:linear-gradient(135deg,#f3e5f5,#e1bee7);}
+.lrow-img.cat-5{background:linear-gradient(135deg,#fff3e0,#ffe0b2);}
+.lrow-img.cat-6{background:linear-gradient(135deg,#e8eaf6,#c5cae9);}
+.lrow-body{flex:1;display:flex;flex-direction:column;justify-content:space-between;}
+.lrow-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.lrow-title{font-size:16px;font-weight:600;color:var(--d);margin-bottom:6px;line-height:1.4;}
+.lrow-fav{background:none;border:none;cursor:pointer;font-size:20px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.2));transition:transform .18s;}
+.lrow-fav:hover{transform:scale(1.15);}
+.lrow-desc{font-size:13px;color:var(--m);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:12px;}
+.lrow-bot{display:flex;justify-content:space-between;align-items:flex-end;}
+.lrow-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.ltag{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:var(--bg);color:var(--m);}
+.lrow-price{text-align:right;flex-shrink:0;}
+.lrow-price-val{font-size:20px;font-weight:700;color:var(--d);letter-spacing:-.5px;}
+.lrow-price-cur{font-size:12px;color:var(--m);}
+
+/* ─── MODALS ─── */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
+.ov.open{display:flex;}
+.mod{background:var(--w);border-radius:16px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;animation:mi .24s cubic-bezier(.34,1.56,.64,1);}
+@keyframes mi{from{opacity:0;transform:scale(.93) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.mh{padding:18px 22px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--w);border-radius:16px 16px 0 0;z-index:1;}
+.mh h3{font-size:17px;font-weight:700;color:var(--d);}
+.mx{width:30px;height:30px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--m);transition:all .15s;}
+.mx:hover{background:var(--r);color:white;}
+.mb{padding:18px 22px 22px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--m);margin-bottom:5px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 13px;border:1.5px solid var(--b);border-radius:10px;font:14px/1 'Inter',sans-serif;color:var(--d);background:var(--w);outline:none;transition:border-color .15s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--d);}
+.fg textarea{height:88px;resize:none;line-height:1.5;}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.bsub{width:100%;padding:14px;background:var(--r);color:white;border:none;border-radius:10px;font:600 15px 'Inter',sans-serif;cursor:pointer;margin-top:6px;transition:background .2s;}
+.bsub:hover{background:var(--r2);}
+
+/* detail */
+.dimg-wrap{height:260px;display:flex;align-items:center;justify-content:center;font-size:100px;border-radius:16px 16px 0 0;}
+.db{padding:20px 22px 24px;}
+.dprice{font-size:28px;font-weight:700;color:var(--d);letter-spacing:-.5px;margin-bottom:4px;}
+.dprice small{font-size:13px;font-weight:400;color:var(--m);}
+.dtit{font-size:17px;font-weight:600;color:var(--d);line-height:1.4;margin-bottom:8px;}
+.dtags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.dtag{background:var(--bg);color:var(--m);font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;}
+.ddesc{font-size:14px;color:var(--m);line-height:1.7;margin-bottom:18px;}
+.scard{display:flex;align-items:center;gap:12px;border:1px solid var(--b);border-radius:12px;padding:14px;margin-bottom:16px;}
+.sav{width:42px;height:42px;border-radius:50%;background:var(--r);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0;}
+.sname{font-size:14px;font-weight:600;color:var(--d);}
+.srat{font-size:12px;color:var(--m);margin-top:2px;}
+.bcall{width:100%;padding:13px;background:#00A699;color:white;border:none;border-radius:10px;font:700 14px 'Inter',sans-serif;cursor:pointer;margin-bottom:8px;}
+.bmsg{width:100%;padding:13px;background:var(--d);color:white;border:none;border-radius:10px;font:700 14px 'Inter',sans-serif;cursor:pointer;}
+.bmsg:hover{background:#111;}
+
+/* post btn */
+.pb{background:linear-gradient(to right,var(--r),var(--r2));border:none;color:white;padding:10px 18px;border-radius:22px;font:700 13px 'Inter',sans-serif;cursor:pointer;transition:opacity .2s;}
+.pb:hover{opacity:.9;}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--d);color:white;padding:12px 22px;border-radius:30px;font:600 13px 'Inter',sans-serif;opacity:0;transition:all .25s;pointer-events:none;z-index:9999;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.18);}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* promo */
+.promo{border-radius:16px;background:linear-gradient(135deg,var(--d),#3a3a3a);padding:32px 40px;display:flex;justify-content:space-between;align-items:center;gap:20px;margin:0 0 60px;}
+.promo h3{font-size:20px;font-weight:700;color:white;margin-bottom:6px;letter-spacing:-.3px;}
+.promo p{font-size:13px;color:rgba(255,255,255,.5);}
+.prbtn{background:var(--r);color:white;border:none;padding:12px 24px;border-radius:10px;font:700 14px 'Inter',sans-serif;cursor:pointer;flex-shrink:0;transition:background .2s;}
+.prbtn:hover{background:var(--r2);}
+
+/* footer */
+footer{background:#111;color:rgba(255,255,255,.5);padding:48px 80px 24px;}
+.fi{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px;max-width:1600px;}
+.flogo{font-size:22px;font-weight:800;color:var(--r);margin-bottom:10px;letter-spacing:-.5px;}
+.fdesc{font-size:13px;line-height:1.7;color:rgba(255,255,255,.3);}
+.fc h5{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px;}
+.fc ul{list-style:none;}
+.fc li{font-size:13px;margin-bottom:9px;cursor:pointer;transition:color .15s;}
+.fc li:hover{color:white;}
+.fb{border-top:1px solid rgba(255,255,255,.07);padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,.25);}
+.flg{display:flex;gap:2px;background:rgba(255,255,255,.06);border-radius:20px;padding:3px;}
+.flb{padding:5px 10px;border-radius:16px;font-size:11px;font-weight:700;border:none;background:transparent;color:rgba(255,255,255,.35);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.flb.on{background:var(--r);color:white;}
+
+@media(max-width:1100px){.nb-top,.cs-i,.main,footer{padding-left:40px;padding-right:40px;}}
+@media(max-width:760px){
+  .nb-top{padding:0 20px;gap:12px;}
+  .sp{display:none;}
+  .main{padding:20px;}
+  .grid{grid-template-columns:repeat(2,1fr);gap:14px;}
+  .lrow-img{width:130px;height:110px;}
+  .promo{flex-direction:column;text-align:center;padding:24px;}
+  footer{padding:40px 20px 20px;}
+  .fi{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .fi{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<script>
+/* ── DATA ── */
+const CATS_EN=["","Real Estate","Vehicles","Electronics","Clothing","Furniture","Jobs","Other"];
+const EM=["","🏠","🚗","📱","👕","🛋️","💼","🌿"];
+
+const ADS=[
+  {hy:{t:"2 սեն. բն. Կ. — Կ. վ.",d:"52 մ², 4-ր. հ., լ. վ.: Մ.3 ր.: Բ., Ն. Խ.: Ե. ա.:"},
+   ru:{t:"2-комн. Кентрон — Ремонт",d:"52 м², 4 этаж, полный ремонт. 3 мин до метро. Балкон, новая кухня."},
+   en:{t:"2-Room Apt, Kentron — Renovated",d:"52 sqm, 4th floor, fully renovated. 3 min to metro. Balcony, new kitchen."},
+   cat:"Real Estate",ce:"Excellent",cr:"Отличное",ch:"Շ. Լ.",
+   price:48000000,loc:"Երևան, Կ.",seller:"Արման Կ.",feat:true,fav:false},
+
+  {hy:{t:"Toyota RAV4 2021 — 38K կ.",d:"Ավ. 2.5L հ.: Ս., ա.: Է.ն., պ.ծ.:"},
+   ru:{t:"Toyota RAV4 2021 Гибрид",d:"Автомат 2.5L гибрид. Обслужен, без аварий. Электр. сиденья, панорама."},
+   en:{t:"Toyota RAV4 2021 Hybrid",d:"Automatic 2.5L hybrid. Fully serviced, no accidents. Electric seats, panoramic roof."},
+   cat:"Vehicles",ce:"Good",cr:"Хорошее",ch:"Լ.",
+   price:12500000,loc:"Երևան, Ե.",seller:"Նարեկ Հ.",feat:false,fav:false},
+
+  {hy:{t:"iPhone 15 Pro Max 512GB",d:"Կ.տ., Հ.եր.: Nat. Titanium: Հ. ա.:"},
+   ru:{t:"iPhone 15 Pro Max 512GB — New",d:"Запечатанная коробка, гарантия Армении. Natural Titanium. С чеком."},
+   en:{t:"iPhone 15 Pro Max 512GB",d:"Sealed box, Armenia warranty. Natural Titanium. Sold with receipt."},
+   cat:"Electronics",ce:"New",cr:"Новое",ch:"Նոր",
+   price:980000,loc:"Երևան, Մ.",seller:"Սոնա Գ.",feat:true,fav:false},
+
+  {hy:{t:"Կ. բ. Vintage — Կ. M",d:"Ի. կ., 90-ի: Ք. կ., ա. բ.:"},
+   ru:{t:"Кожаная куртка Vintage — Ж M",d:"Натуральная кожа, 90-е. Мало использована, без повреждений."},
+   en:{t:"Vintage Leather Jacket — M",d:"Real leather, 90s model. Lightly used, no damage."},
+   cat:"Clothing",ce:"Excellent",cr:"Отличное",ch:"Շ. Լ.",
+   price:65000,loc:"Երևան, Շ.",seller:"Անի Պ.",feat:false,fav:false},
+
+  {hy:{t:"Ա. բ. Լ-ձ. — Մ.",d:"Բ. կ., 280×200: 2 տ., Մ.: Տ.—գ.:"},
+   ru:{t:"Угловой диван Г-образный",d:"Качественная ткань, Г-форма. 2 года, чистый. Доставка — покупатель."},
+   en:{t:"L-Shape Corner Sofa — Grey",d:"Quality fabric, L-shape 280×200cm. 2 years, clean. Delivery buyer's."},
+   cat:"Furniture",ce:"Good",cr:"Хорошее",ch:"Լ.",
+   price:420000,loc:"Երևան, Ա.",seller:"Տ. Մ.",feat:false,fav:false},
+
+  {hy:{t:"React Developer — Հ-վ.",d:"5+ տ., TypeScript: Հ-վ. USD:"},
+   ru:{t:"Senior React Developer Remote",d:"5+ лет, TypeScript обязателен. Full-time удалённо. Конкурентная USD зарплата."},
+   en:{t:"Senior React Developer — Remote",d:"5+ years, TypeScript required. Full-time remote. Competitive USD salary."},
+   cat:"Jobs",ce:"—",cr:"—",ch:"—",
+   price:0,loc:"Remote",seller:"TechCo AM",feat:true,fav:false},
+
+  {hy:{t:"MacBook Pro M3 Max 16\"",d:"6 ամ., Apple Care+: Space Black, 1TB:"},
+   ru:{t:"MacBook Pro M3 Max 16\" 64GB",d:"6 месяцев, Apple Care+. Space Black, 1TB SSD. Все аксессуары."},
+   en:{t:"MacBook Pro M3 Max 16\" 64GB",d:"6 months, Apple Care+. Space Black, 1TB SSD. All accessories."},
+   cat:"Electronics",ce:"Excellent",cr:"Отличное",ch:"Շ. Լ.",
+   price:2100000,loc:"Երևան, Կ.",seller:"Հ. Ս.",feat:false,fav:false},
+
+  {hy:{t:"Վ. 3+1 Արաբ. — 320K",d:"320K AMD/ամ.: Կ.+ս.: Ա., հ.: 75մ²:"},
+   ru:{t:"Аренда 3+1 — Арабкир 320K",d:"320 000 AMD/мес. Меблированная + техника. Солнечная, тихая. 75м²."},
+   en:{t:"Rental 3+1 — Arabkir 320K",d:"320,000 AMD/month. Fully furnished + appliances. Sunny, quiet. 75sqm."},
+   cat:"Real Estate",ce:"—",cr:"—",ch:"—",
+   price:320000,loc:"Երևան, Արաբ.",seller:"Մ. Ա.",feat:false,fav:false}
+];
+
+/* ── TRANSLATIONS ── */
+const TR={
+  hy:{tag:"🇦🇲 N°1 հայտ. կայք",h1l1:"Ամ. լ.",h1em:"հայտ.",h1l2:"Հայ.",
+    sub:"Անշ. · Մ. · Էլ. · Հ. · Աշ. — Անվ. · Արագ",
+    s1:"Հայտ",s2:"Oգ.",s3:"Քաղ.",
+    cats:["Բ.","Անշ.","Մ.","Էլ.","Հ.","Կ.","Աշ.","Ա."],
+    all:"Բ. հայտ",post:"+ Հ.",login:"Մ.",
+    fil:["Ն.","Գ.↑","Գ.↓"],feat:"Ընդ.",today:"Այuօր",cur:"AMD",neg:"Պ.",
+    proh:"🚀 Ընդ. ձ. հ.",prop:"3× ↑ · 500 AMD/օր",probtn:"Ընդ. →",
+    pt:"Հ. Ա.",ft:"Վ.",fc:"Կ.",fco:"Վ.",fp:"Գ.",fl:"Վ.",fd:"Նկ.",
+    fsub:"Հ. →",fav1:"❤️",fav0:"🤍",
+    ok:"✅ Հ.!",err:"⚠️ Վ. պ.!",call:"📞",msg:"💬",cng:"📞...",ms:"💬 Ու.!",
+    con:"Կ. վ.",rat:"⭐ 4.8",
+    cats_f:["","Անշ.","Մ.","Էլ.","Հ.","Կ.","Աշ.","Ա."],
+    conds:["Նոր","Շ.Լ.","Լ.","Մ."],
+    fd1:"Հ.",fl1:["Ինչ.","Ան.","Բ.","Պ."],
+    fd2:"Կ.",fl2:["Անշ.","Մ.","Էլ.","Աշ."],
+    fd3:"Ա.",fl3:["Օ.","Կ.","Գ.","Պ."],
+    fdesc:"Հայ. ամ. հ. հ.",copy:"© 2025 Varq.am"},
+
+  ru:{tag:"🇦🇲 Объявления №1 в Армении",h1l1:"Лучшие",h1em:"объявления",h1l2:"Армении",
+    sub:"Недвижимость · Авто · Электроника · Одежда · Работа",
+    s1:"Объявл.",s2:"Польз.",s3:"Городов",
+    cats:["Все","Недв.","Авто","Эл.","Одеж.","Меб.","Раб.","Пр."],
+    all:"Все объявления",post:"+ Объявл.",login:"Войти",
+    fil:["Нов.","Ц.↑","Ц.↓"],feat:"Топ",today:"Сегодня",cur:"AMD",neg:"Дог.",
+    proh:"🚀 Выделите объявление",prop:"3× просмотров · 500 AMD/день",probtn:"Выделить →",
+    pt:"Подать объявл.",ft:"Заголовок",fc:"Категория",fco:"Состояние",fp:"Цена",fl:"Место",fd:"Описание",
+    fsub:"Опубликовать →",fav1:"❤️",fav0:"🤍",
+    ok:"✅ Опубл.!",err:"⚠️ Заг. обяз.!",call:"📞 Звонок",msg:"💬 Написать",cng:"📞...",ms:"💬 Отправлено!",
+    con:"Связаться с продавцом",rat:"⭐ 4.8 · Активный",
+    cats_f:["","Недвижимость","Авто","Электроника","Одежда","Мебель","Работа","Прочее"],
+    conds:["Новое","Отличное","Хорошее","Среднее"],
+    fd1:"Платформа",fl1:["Как работает","Безопасность","Приложение","Премиум"],
+    fd2:"Категории",fl2:["Недвижимость","Авто","Электроника","Работа"],
+    fd3:"Поддержка",fl3:["Помощь","Контакты","Конфиденц.","Условия"],
+    fdesc:"Крупнейшая доска объявлений Армении.",copy:"© 2025 Varq.am"},
+
+  en:{tag:"🇦🇲 Armenia's #1 Classifieds",h1l1:"The best",h1em:"listings",h1l2:"in Armenia",
+    sub:"Real Estate · Cars · Electronics · Clothing · Jobs — Free · Fast · Trusted",
+    s1:"Listings",s2:"Users",s3:"Cities",
+    cats:["All","Estate","Cars","Electr.","Cloth.","Furn.","Jobs","Other"],
+    all:"All Listings",post:"+ Post Ad",login:"Log in",
+    fil:["New","P.↑","P.↓"],feat:"Featured",today:"Today",cur:"AMD",neg:"Neg.",
+    proh:"🚀 Boost Your Listing",prop:"3× more views · 500 AMD/day",probtn:"Boost Now →",
+    pt:"Post a New Ad",ft:"Title",fc:"Category",fco:"Condition",fp:"Price",fl:"Location",fd:"Description",
+    fsub:"Publish →",fav1:"❤️",fav0:"🤍",
+    ok:"✅ Published!",err:"⚠️ Title required!",call:"📞 Call",msg:"💬 Message",cng:"📞 Calling...",ms:"💬 Sent!",
+    con:"Contact Seller",rat:"⭐ 4.8 · Active",
+    cats_f:["","Real Estate","Vehicles","Electronics","Clothing","Furniture","Jobs","Other"],
+    conds:["New","Excellent","Good","Fair"],
+    fd1:"Platform",fl1:["How It Works","Safety","Mobile App","Premium"],
+    fd2:"Categories",fl2:["Real Estate","Cars","Electronics","Jobs"],
+    fd3:"Support",fl3:["Help","Contact","Privacy","Terms"],
+    fdesc:"Armenia's largest classifieds platform.",copy:"© 2025 Varq.am"}
+};
+
+/* ── STATE ── */
+let lang='hy',cat='',q='',view='grid';
+const t=k=>TR[lang][k];
+const ci=c=>CATS_EN.indexOf(c);
+const gt=a=>(a[lang]||a.en).t;
+const gd=a=>(a[lang]||a.en).d;
+const gc=a=>a['c'+lang[0]]||a.ce;
+const cl=a=>{const i=ci(a.cat);return t('cats')[i]||a.cat;};
+const fp=(p,c)=>{if(c==='Jobs')return t('neg');if(p>=1e6)return(p/1e6).toFixed(p%1e6?1:0)+'M';if(p>=1000)return Math.round(p/1000)+'K';return p.toLocaleString();};
+const cg=(c)=>{if(!c||c==='—')return'';const l=c.toLowerCase();return l.includes('new')||l==='նոր'||l.includes('нов')?'cat-0':l.includes('exc')||l.includes('отл')||l.includes('շ')?'cat-2':'cat-5';};
+
+/* ── RENDER ── */
+function filt(){return ADS.filter(a=>(!q||gt(a).toLowerCase().includes(q)||gd(a).toLowerCase().includes(q))&&(!cat||a.cat===cat));}
+
+function rGrid(items){
+  const el=document.getElementById('grd');
+  if(!items.length){el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--m);font-size:15px">😔 Ոչինչ / Ничего / Nothing found</div>';return;}
+  el.innerHTML=items.map((a,i)=>{
+    const j=ci(a.cat),isJob=a.cat==='Jobs',c=gc(a);
+    return`<div class="card" onclick="openD(${i})">
+      <div class="card-img cat-${j}">
+        ${a.feat?`<div class="card-badge">${t('feat')}</div>`:''}
+        <button class="card-fav" onclick="event.stopPropagation();fav(${i})">${a.fav?'❤️':'🤍'}</button>
+        <span style="filter:drop-shadow(0 2px 8px rgba(0,0,0,.15))">${EM[j]||'📦'}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row1">
+          <div class="card-place">${a.loc}</div>
+          <div class="card-rating">★ 4.8</div>
+        </div>
+        <div class="card-sub">${cl(a)}${c!=='—'?' · '+c:''}</div>
+        <div class="card-price">${isJob?`<b>${t('neg')}</b>`:`<b>${fp(a.price,a.cat)}</b> <span style="font-weight:400;color:var(--m)">${t('cur')}</span>`}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function rList(items){
+  const el=document.getElementById('lst');
+  if(!items.length){el.innerHTML='<div style="text-align:center;padding:60px;color:var(--m)">😔</div>';return;}
+  el.innerHTML=items.map((a,i)=>{
+    const j=ci(a.cat),isJob=a.cat==='Jobs';
+    return`<div class="lrow" onclick="openD(${i})">
+      <div class="lrow-img cat-${j}">${a.feat?`<div class="card-badge" style="top:8px;left:8px;font-size:10px">${t('feat')}</div>`:''}${EM[j]||'📦'}</div>
+      <div class="lrow-body">
+        <div class="lrow-top">
+          <div>
+            <div class="lrow-title">${gt(a)}</div>
+            <div class="lrow-desc">${gd(a)}</div>
+          </div>
+          <button class="lrow-fav" onclick="event.stopPropagation();fav(${i})">${a.fav?'❤️':'🤍'}</button>
+        </div>
+        <div class="lrow-bot">
+          <div class="lrow-tags"><span class="ltag">${cl(a)}</span><span class="ltag">📍 ${a.loc}</span>${gc(a)!=='—'?`<span class="ltag">${gc(a)}</span>`:''}</div>
+          <div class="lrow-price"><div class="lrow-price-val">${fp(a.price,a.cat)}</div><div class="lrow-price-cur">${isJob?'':t('cur')}</div></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function render(){
+  const items=filt();
+  rGrid(items);rList(items);
+  const c=document.getElementById('cnt');if(c)c.textContent=items.length+(lang==='en'?' listings':lang==='ru'?' объявл.':' հայտ');
+  document.getElementById('sN').textContent=ADS.length;
+}
+
+function setView(v){
+  view=v;
+  document.getElementById('grd').classList.toggle('hide',v!=='grid');
+  document.getElementById('lst').classList.toggle('hide',v!=='list');
+  document.querySelectorAll('.vb').forEach((b,i)=>b.classList.toggle('on',(i===0&&v==='grid')||(i===1&&v==='list')));
+}
+
+function setCat(el,c){cat=c;document.querySelectorAll('.cc').forEach(x=>x.classList.remove('on'));el.classList.add('on');render();}
+
+function fav(i){ADS[i].fav=!ADS[i].fav;render();toast(ADS[i].fav?'❤️ Saved':'💔 Removed');}
+
+function openD(i){
+  const a=ADS[i],j=ci(a.cat),isJob=a.cat==='Jobs';
+  document.getElementById('dimg').className='dimg-wrap cat-'+j;
+  document.getElementById('dimg').textContent=EM[j]||'📦';
+  document.getElementById('dpr').innerHTML=`${fp(a.price,a.cat)}${isJob?'':` <small>${t('cur')}</small>`}`;
+  document.getElementById('dtit').textContent=gt(a);
+  document.getElementById('ddesc').textContent=gd(a);
+  document.getElementById('dtags').innerHTML=`<span class="dtag">${cl(a)}</span>${gc(a)!=='—'?`<span class="dtag">${gc(a)}</span>`:''}<span class="dtag">📍 ${a.loc}</span>`;
+  document.getElementById('sav').textContent=a.seller[0];
+  document.getElementById('snam').textContent=a.seller;
+  document.getElementById('srat').textContent=t('rat');
+  document.getElementById('dcall').textContent=t('call');
+  document.getElementById('dmsg').textContent=t('msg');
+  document.getElementById('dmtit').textContent=t('con');
+  openOv('dOv');
+}
+
+function addL(){
+  const ti=document.getElementById('nT').value.trim();
+  if(!ti){toast(t('err'));return;}
+  ADS.unshift({hy:{t:ti,d:document.getElementById('nD').value},ru:{t:ti,d:''},en:{t:ti,d:''},
+    cat:document.getElementById('nC').value||'Other',ce:document.getElementById('nCo').value,cr:'',ch:'',
+    price:parseInt(document.getElementById('nP').value)||0,loc:document.getElementById('nL').value||'Երևան',
+    seller:'Դու',feat:false,fav:false});
+  closeOv('pOv');['nT','nP','nL','nD','nPh'].forEach(id=>document.getElementById(id).value='');
+  render();toast(t('ok'));
+}
+
+function setLang(l){lang=l;document.querySelectorAll('.lbtn,.flb').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));buildUI();}
+
+function buildUI(){
+  const r=TR[lang];
+  // navbar
+  document.getElementById('postBtn').textContent=r.post;
+  document.getElementById('loginBtn').textContent=r.login;
+  // cats
+  document.getElementById('catBar').innerHTML=r.cats.map((c,i)=>`<div class="cc${i===0&&!cat?' on':''}" onclick="setCat(this,'${i===0?'':CATS_EN[i]}')"><div class="cc-ic">${i===0?'🔍':EM[i]}</div>${c}</div>`).join('');
+  // toolbar
+  document.getElementById('adsTitle').textContent=cat?(r.cats[CATS_EN.indexOf(cat)]||cat):r.all;
+  // modal labels
+  ['ft','fc','fco','fp','fl','fd'].forEach(k=>{const el=document.getElementById(k+'L');if(el)el.textContent=r[k];});
+  document.getElementById('fsubBtn').textContent=r.fsub;
+  document.getElementById('pmtit').textContent=r.pt;
+  document.getElementById('nC').innerHTML=r.cats_f.slice(1).map(c=>`<option>${c}</option>`).join('');
+  document.getElementById('nCo').innerHTML=r.conds.map(c=>`<option>${c}</option>`).join('');
+  // promo
+  document.getElementById('promoH').textContent=r.proh;
+  document.getElementById('promoP').textContent=r.prop;
+  document.getElementById('promoBt').textContent=r.probtn;
+  // footer
+  document.getElementById('fdesc').textContent=r.fdesc;
+  ['1','2','3'].forEach(n=>{document.getElementById('fh'+n).textContent=r['fd'+n];document.getElementById('fl'+n).innerHTML=r['fl'+n].map(l=>`<li>${l}</li>`).join('');});
+  document.getElementById('fcp').textContent=r.copy;
+  render();
+}
+
+function openOv(id){document.getElementById(id).classList.add('open');}
+function closeOv(id){document.getElementById(id).classList.remove('open');}
+function toast(m){const el=document.getElementById('t');el.textContent=m;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),2200);}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+  setView('grid');buildUI();
+});
+</script>
+
+<!-- NAVBAR -->
+<nav class="nb">
+  <div class="nb-top">
+    <div class="logo">varq<span style="color:var(--t);font-weight:300">.am</span></div>
+
+    <div class="sp">
+      <div class="sp-s">
+        <span class="sp-label">Կատ. / Кат.</span>
+        <span class="sp-val"><select onchange="cat=this.value;render()">
+          <option value="">Բ. / Все / All</option>
+          <option value="Real Estate">🏠 Անշ. / Недв.</option>
+          <option value="Vehicles">🚗 Մ. / Авто</option>
+          <option value="Electronics">📱 Էլ.</option>
+          <option value="Clothing">👕 Հ. / Одеж.</option>
+          <option value="Jobs">💼 Աշ. / Работа</option>
+        </select></span>
+      </div>
+      <div class="sp-s">
+        <span class="sp-label">Ի՞նչ / Поиск / Search</span>
+        <span class="sp-val"><input type="text" placeholder="Եր., iPhone..." oninput="q=this.value.toLowerCase();render()"></span>
+      </div>
+      <button class="sp-btn">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="white" stroke-width="2.5"/><path d="m20 20-3-3" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <span>Փ.</span>
+      </button>
+    </div>
+
+    <div class="nb-r">
+      <div class="lg">
+        <button class="lbtn on" data-lang="hy" onclick="setLang('hy')">ՀՅ</button>
+        <button class="lbtn" data-lang="ru" onclick="setLang('ru')">RU</button>
+        <button class="lbtn" data-lang="en" onclick="setLang('en')">EN</button>
+      </div>
+      <button class="ng" id="loginBtn" onclick="toast('Շուտով / Скоро')">Մ.</button>
+      <div class="ua" onclick="openOv('pOv')">
+        <span class="ua-ic" id="postBtn">+ Հ.</span>
+        <span class="ua-av">👤</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- CATEGORY STRIP -->
+<div class="cs"><div class="cs-i" id="catBar"></div></div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- HERO TEXT -->
+  <div style="padding:40px 0 32px;text-align:center;">
+    <p style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--r);margin-bottom:12px" id="htag">🇦🇲 N°1 հայտ.</p>
+    <h1 style="font-size:48px;font-weight:800;color:var(--d);letter-spacing:-2px;line-height:1.05;margin-bottom:12px">
+      Ամ. լ. <em style="color:var(--r);font-style:normal">հայտ.</em><br>Հայ.
+    </h1>
+    <p style="font-size:15px;color:var(--m);margin-bottom:28px" id="hsub">Անշ. · Մ. · Էլ. · Հ. · Աշ.</p>
+    <div style="display:flex;gap:0;justify-content:center;border:1px solid var(--b);border-radius:12px;overflow:hidden;background:var(--w);max-width:360px;margin:0 auto;box-shadow:var(--sh);">
+      <div style="flex:1;padding:14px;text-align:center;border-right:1px solid var(--b);">
+        <div style="font-size:22px;font-weight:800;color:var(--d);letter-spacing:-.5px" id="sN">8</div>
+        <div style="font-size:11px;color:var(--m);margin-top:2px" id="s1l">Հայտ</div>
+      </div>
+      <div style="flex:1;padding:14px;text-align:center;border-right:1px solid var(--b);">
+        <div style="font-size:22px;font-weight:800;color:var(--d)">3.2M</div>
+        <div style="font-size:11px;color:var(--m);margin-top:2px" id="s2l">Oգ.</div>
+      </div>
+      <div style="flex:1;padding:14px;text-align:center;">
+        <div style="font-size:22px;font-weight:800;color:var(--d)">11</div>
+        <div style="font-size:11px;color:var(--m);margin-top:2px" id="s3l">Քաղ.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="tb">
+    <div class="tb-l">
+      <span class="tb-title" id="adsTitle"></span>
+      <span class="tb-cnt" id="cnt"></span>
+    </div>
+    <div class="tb-r">
+      <div class="vt">
+        <button class="vb on" onclick="setView('grid')">⊞</button>
+        <button class="vb" onclick="setView('list')">☰</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTINGS -->
+  <div class="grid" id="grd"></div>
+  <div class="list hide" id="lst"></div>
+
+  <!-- PROMO -->
+  <div class="promo">
+    <div><h3 id="promoH"></h3><p id="promoP"></p></div>
+    <button class="prbtn" id="promoBt" onclick="toast('Շուտով!')"></button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fi">
+    <div><div class="flogo">varq.am</div><p class="fdesc" id="fdesc"></p></div>
+    <div class="fc"><h5 id="fh1"></h5><ul id="fl1"></ul></div>
+    <div class="fc"><h5 id="fh2"></h5><ul id="fl2"></ul></div>
+    <div class="fc"><h5 id="fh3"></h5><ul id="fl3"></ul></div>
+  </div>
+  <div class="fb">
+    <span id="fcp"></span>
+    <div class="flg">
+      <button class="flb on" data-lang="hy" onclick="setLang('hy')">ՀՅ</button>
+      <button class="flb" data-lang="ru" onclick="setLang('ru')">RU</button>
+      <button class="flb" data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</footer>
+
+<!-- POST MODAL -->
+<div class="ov" id="pOv">
+  <div class="mod">
+    <div class="mh"><h3 id="pmtit"></h3><button class="mx" onclick="closeOv('pOv')">✕</button></div>
+    <div class="mb">
+      <div class="fg"><label id="ftL"></label><input id="nT" placeholder="..."></div>
+      <div class="f2">
+        <div class="fg"><label id="fcL"></label><select id="nC"></select></div>
+        <div class="fg"><label id="fcoL"></label><select id="nCo"></select></div>
+      </div>
+      <div class="f2">
+        <div class="fg"><label id="fpL"></label><input type="number" id="nP" placeholder="0"></div>
+        <div class="fg"><label id="flL"></label><input id="nL" placeholder="Երևան"></div>
+      </div>
+      <div class="fg"><label id="fdL"></label><textarea id="nD" placeholder="..."></textarea></div>
+      <div class="fg"><label>Tel</label><input type="tel" id="nPh" placeholder="+374"></div>
+      <button class="bsub" id="fsubBtn" onclick="addL()">Publish</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="ov" id="dOv">
+  <div class="mod">
+    <div class="mh"><h3 id="dmtit"></h3><button class="mx" onclick="closeOv('dOv')">✕</button></div>
+    <div class="dimg-wrap" id="dimg"></div>
+    <div class="db">
+      <div class="dprice" id="dpr"></div>
+      <div class="dtit" id="dtit"></div>
+      <div class="dtags" id="dtags"></div>
+      <div class="ddesc" id="ddesc"></div>
+      <div class="scard">
+        <div class="sav" id="sav"></div>
+        <div><div class="sname" id="snam"></div><div class="srat" id="srat"></div></div>
+      </div>
+      <button class="bcall" id="dcall" onclick="toast(TR[lang].cng)"></button>
+      <button class="bmsg" id="dmsg" onclick="toast(TR[lang].ms)"></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="t"></div>
+</body>
+</html>
